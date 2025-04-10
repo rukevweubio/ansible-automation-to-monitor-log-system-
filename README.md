@@ -43,6 +43,11 @@ Before using this project, ensure that you have the following:
 3. To automate the log scraping process, use the provided cron task configuration. The playbook includes tasks to set up cron jobs on the target servers.
 
 ## Playbook Structure
+![ansible automation ](https://github.com/rukevweubio/ansible-automation-to-monitor-log-system-/blob/main/piturefile/Screenshot%20(610).png)
 
-The project structure is as follows:
+![ansible automation ](https://github.com/rukevweubio/ansible-automation-to-monitor-log-system-/blob/main/piturefile/Screenshot%20(607).png)
+
+![ansible automation ](https://github.com/rukevweubio/ansible-automation-to-monitor-log-system-/blob/main/piturefile/Screenshot%20(608).png)
+
+![ansible automation ](https://github.com/rukevweubio/ansible-automation-to-monitor-log-system-/blob/main/piturefile/Screenshot%20(612).png)
 
