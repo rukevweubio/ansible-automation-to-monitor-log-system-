@@ -16,6 +16,9 @@ Before using this project, ensure that you have the following:
 4. **Cron**: Available on the target servers for scheduling tasks.
 5. **SSH Access**: Ensure passwordless SSH access is configured between the control machine and the target servers.
 
+
+![data flow ](https://github.com/rukevweubio/ansible-automation-to-monitor-log-system-/blob/main/Concept%20map.png)
+
 ## Installation
 
 1. Clone this repository to your local machine:
