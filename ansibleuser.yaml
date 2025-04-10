@@ -1,0 +1,44 @@
+---
+- name: Create file in the remote and local machine
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Create group in local and remote machine
+      ansible.builtin.group:
+        name: mygroup
+        state: present
+
+    - name: Create a new user
+      ansible.builtin.user:
+        name: myuser
+        group: mygroup
+        groups:
+          - mygroup
+        shell: /bin/bash
+        home: /home/myuser
+        state: present
+
+    - name: Create a file in the remote machine
+      ansible.builtin.file:
+        path: /home/myuser/test_file.txt
+        state: touch
+        owner: myuser
+        group: mygroup
+        mode: '0644'
+
+    - name: Create source file on the remote machine
+      ansible.builtin.copy:
+        content: "This is the content of the source file."
+        dest: /home/myuser/source_file.txt
+        owner: myuser
+        group: mygroup
+        mode: '0644'
+
+    - name: Copy file from remote to remote
+      ansible.builtin.copy:
+        src: /home/myuser/source_file.txt
+        dest: /home/myuser/destination_file.txt
+        owner: myuser
+        group: mygroup
+        mode: '0644'
+        remote_src: yes

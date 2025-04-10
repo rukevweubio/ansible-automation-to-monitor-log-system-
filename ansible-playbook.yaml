@@ -1,0 +1,81 @@
+---
+- name: Create PostgreSQL and MySQL Databases
+  hosts: database
+  become: yes
+  vars_files:
+    - group_vars/all.yml
+
+  tasks:
+
+    - name: Install PostgreSQL and MySQL
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - postgresql
+        - postgresql-contrib
+        - mysql-server
+        - python3-psycopg2
+        - python3-mysqldb
+
+    # -------------------
+    # PostgreSQL Section
+    # -------------------
+    - name: Ensure PostgreSQL is running
+      service:
+        name: postgresql
+        state: started
+        enabled: true
+
+    - name: Create PostgreSQL user
+      become_user: postgres
+      postgresql_user:
+        name: "{{ pg_user }}"
+        password: "{{ pg_password }}"
+
+    - name: Create PostgreSQL database
+      become_user: postgres
+      postgresql_db:
+        name: "{{ pg_db }}"
+        owner: "{{ pg_user }}"
+
+    - name: Copy PostgreSQL schema file to remote host
+      copy:
+        src: files/postgres_schema.sql
+        dest: /tmp/postgres_schema.sql
+
+    - name: Load schema in PostgreSQL
+      become_user: postgres
+      shell: psql -d {{ pg_db }} -f /tmp/postgres_schema.sql
+
+
+    # -------------------
+    # MySQL Section
+    # -------------------
+    - name: Ensure MySQL is running
+      service:
+        name: mysql
+        state: started
+        enabled: true
+
+    - name: Create MySQL user
+      mysql_user:
+        name: "{{ mysql_user }}"
+        password: "{{ mysql_password }}"
+        priv: "*.*:ALL"
+        state: present
+        login_user: root
+
+    - name: Create MySQL database
+      mysql_db:
+        name: "{{ mysql_db }}"
+        state: present
+        login_user: root
+
+    - name: Copy MySQL schema file to remote host
+      copy:
+        src: files/mysql_schema.sql
+        dest: /tmp/mysql_schema.sql
+
+    - name: Load schema in MySQL
+      shell: mysql -u root "{{ mysql_db }}" < /tmp/mysql_schema.sql

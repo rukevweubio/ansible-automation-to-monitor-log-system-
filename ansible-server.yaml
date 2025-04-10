@@ -1,0 +1,28 @@
+---
+- name: Restart MySQL and PostgreSQL services
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Stop MySQL server
+      service:
+        name: mysql
+        state: stopped
+        enabled: no
+
+    - name: Stop PostgreSQL server
+      service:
+        name: postgresql
+        state: stopped
+        enabled: no
+
+    - name: Start MySQL server
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: Start PostgreSQL server
+      service:
+        name: postgresql
+        state: started
+        enabled: yes
